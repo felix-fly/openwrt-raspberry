@@ -1,0 +1,30 @@
+{
+    "run_type": "client",
+    "local_addr": "0.0.0.0",
+    "local_port": 12345,
+    "remote_addr": "you-server-domain-or-ip",
+    "remote_port": 443,
+    "password": [
+        "change-the-password"
+    ],
+    "log_level": 5,
+    "ssl": {
+        "verify": false,
+        "verify_hostname": false,
+        "cert": "",
+        "cipher": "TLS_CHACHA20_POLY1305_SHA256:TLS-AES-128-GCM-SHA256",
+        "cipher_tls13": "TLS_CHACHA20_POLY1305_SHA256:TLS-AES-128-GCM-SHA256",
+        "sni": "",
+        "alpn": [
+            "h2",
+            "http/1.1"
+        ]
+    },
+    "tcp": {
+        "no_delay": true,
+        "keep_alive": true,
+        "reuse_port": true,
+        "fast_open": true,
+        "fast_open_qlen": 20
+    }
+}

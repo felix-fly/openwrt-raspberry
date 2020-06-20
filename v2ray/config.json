@@ -1,0 +1,41 @@
+{
+  "log": {
+    "loglevel": "none"
+  },
+  "inbounds": [{
+    "port": 12345,
+    "protocol": "socks"
+  }, {
+    "port": 1053,
+    "protocol": "dokodemo-door",
+    "settings": {
+      "network": "udp",
+      "address": "8.8.8.8",
+      "port": 53
+    }
+  }],
+  "outbounds": [{
+    "protocol": "vmess",
+    "settings": {
+      "vnext": [{
+        "address": "your-server-domain-or-ip",
+        "port": 443,
+        "users": [{
+          "security": "none",
+          "id": "new-id",
+          "alterId": 4
+        }]
+      }]
+    },
+    "streamSettings": {
+      "network": "ws",
+      "security": "tls",
+      "tlsSettings": {
+        "allowInsecure": true
+      },
+      "wsSettings": {
+        "path": "/path/"
+      }
+    }
+  }]
+}

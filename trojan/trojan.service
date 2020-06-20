@@ -1,0 +1,12 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2006-2011 OpenWrt.org
+START=50
+STOP=50
+USE_PROCD=1
+APP=/usr/sbin/trojan
+
+start_service() {
+  procd_open_instance
+  procd_set_param command $APP -c /etc/config/trojan/config.json
+  procd_close_instance
+}

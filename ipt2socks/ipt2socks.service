@@ -1,0 +1,12 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2006-2011 OpenWrt.org
+START=50
+STOP=50
+USE_PROCD=1
+APP=/usr/bin/ipt2socks
+
+start_service() {
+  procd_open_instance
+  procd_set_param command $APP -s 192.168.1.10 -p 12345 -b 0.0.0.0 -l 12345 -j4 -4 -r -R -T
+  procd_close_instance
+}
