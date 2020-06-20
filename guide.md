@@ -32,7 +32,7 @@ conf-dir=/etc/config/dnsmasq, *.hosts
 
 # padavan
 # 内部网络(LAN) -> DHCP服务器 -> 自定义配置文件 "dnsmasq.conf"
-conf-dir=/etc/storage/dnsmasq/,*.hosts
+conf-dir=/etc/storage/dnsmasq, *.hosts
 ```
 
 ## ipt2socks
@@ -87,7 +87,7 @@ chmod +x /etc/storage/ipt2socks/iptables.sh
 插卡启动树莓派4b，网线连接，浏览器访问 http://192.168.1.1 修改 接口-LAN，ip根据自己需要调整
 
 ```bash
-# ip设为 192。168.1.10
+# ip设为 192.168.1.10
 # 网关及DNS设为 192.168.1.1
 # 忽略 DHCP
 ```
@@ -99,6 +99,8 @@ trojan和v2ray选择其一即可，trojan性能上有优势，v2ray可能更稳�
 ## trojan
 
 下载trojan文件夹，修改config.json和config-dns.json文件里的remote_addr和password，其它如有需求自行调整
+
+上传至树莓派 /etc/config/trojan
 
 ```bash
 chmod +x /etc/config/trojan/trojan.service
