@@ -129,3 +129,14 @@ ln -s /etc/config/v2ray/v2ray.service /etc/init.d/v2ray
 ```
 
 一切顺利的话就可以愉悦的享受啦，期待你们的speedtest报告
+
+心动了吗，买它！买它！买它！
+
+* 树莓派4b
+
+  ![raspberry4](images/raspberry4.png)
+
+* 无风扇全被动散热外壳
+
+  ![box](images/box.png)
+
