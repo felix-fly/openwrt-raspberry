@@ -4,7 +4,10 @@
   },
   "inbounds": [{
     "port": 12345,
-    "protocol": "socks"
+    "protocol": "dokodemo-door",
+    "settings": {
+      "followRedirect": true
+    }
   }, {
     "port": 1053,
     "protocol": "dokodemo-door",
@@ -15,26 +18,23 @@
     }
   }],
   "outbounds": [{
-    "protocol": "vmess",
+    "protocol": "vless",
     "settings": {
       "vnext": [{
-        "address": "your-server-domain-or-ip",
+        "address": "your-domain",
         "port": 443,
         "users": [{
-          "security": "none",
           "id": "new-id",
-          "alterId": 4
+          "encryption": "none",
+          "flow": "xtls-rprx-origin"
         }]
       }]
     },
     "streamSettings": {
-      "network": "ws",
-      "security": "tls",
-      "tlsSettings": {
-        "allowInsecure": true
-      },
-      "wsSettings": {
-        "path": "/path/"
+      "network": "tcp",
+      "security": "xtls",
+      "xtlsSettings": {
+        "serverName": "your-domain"
       }
     }
   }]

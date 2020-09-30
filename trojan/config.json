@@ -1,8 +1,8 @@
 {
-    "run_type": "client",
+    "run_type": "nat",
     "local_addr": "0.0.0.0",
     "local_port": 12345,
-    "remote_addr": "you-server-domain-or-ip",
+    "remote_addr": "you-domain",
     "remote_port": 443,
     "password": [
         "change-the-password"
