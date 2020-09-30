@@ -131,7 +131,7 @@ v2ray和trojan选择其一即可，目前更推荐v2ray，新协议提升了性�
 
 笔者编译的固件里只包含了trojan而没有v2ray。由于v2ray更新比较快，且后期安装很容易，而trojan独立编译并不容易，暂时保留。
 
-## v2ray
+## v2ray（推荐）
 
 下载v2ray文件夹，修改config.json文件里的address、id、port等，[点此获取最新版本的v2ray。](https://github.com/felix-fly/v2ray-openwrt/releases)
 
@@ -165,6 +165,21 @@ chmod +x /etc/config/trojan/trojan-dns.service
 ln -s /etc/config/trojan/trojan-dns.service /etc/init.d/trojan-dns
 /etc/init.d/trojan-dns enable
 /etc/init.d/trojan-dns start
+```
+
+## iptables配置
+
+修改网段及YOUR_SERVER_IP地址
+
+```bash
+# 在 luci-网络-防火墙-自定义规则 下添加
+iptables -t nat -N PROXY
+iptables -t nat -A PROXY -d 0.0.0.0 -j RETURN
+iptables -t nat -A PROXY -d 127.0.0.1 -j RETURN
+iptables -t nat -A PROXY -d 192.168.1.0/24 -j RETURN
+iptables -t nat -A PROXY -d YOUR_SERVER_IP -j RETURN
+iptables -t nat -A PROXY -p tcp -j REDIRECT --to-port 12345
+iptables -t nat -A PREROUTING -j PROXY
 ```
 
 一切顺利的话就可以愉悦的享受啦，期待你们的speedtest报告
