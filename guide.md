@@ -1,12 +1,31 @@
-下文为在树莓派4b独立部署爬网服务的具体实施方案，想了解前情的[请看这里](./README.md)
+# 目录
+
+* [开场白](#开场白)
+* [主路由](#主路由)
+  * [dnsmasq](#dnsmasq)
+  * [流量转发](#流量转发)
+      * [路由表方式（推荐）](#路由表方式推荐)
+      * [ipt2socks（旧方法）](#ipt2socks旧方法)
+* [树莓派4b或(友善)NanoPi R2S](#树莓派4b或友善nanopi-r2s)
+  * [xray（推荐）](#xray推荐)
+  * [v2ray](#v2ray)
+  * [trojan](#trojan)
+  * [iptables配置](#iptables配置)
+  * [更新记录](#更新记录)
+
+# 开场白
+
+下文为在树莓派4b或(友善)NanoPi R2S独立部署爬网服务的具体实施方案，为描述方便，以下仅以树莓派为例，(友善)NanoPi R2S类同。想了解前情的**[请看这里](./README.md)**
 
 # 主路由
 
-笔者主路由使用k2p，刷的padavan自编译系统，没有集成各种复杂组件，只保留了基本的路由功能，固件大小不足5mb。刚开始刷的lede自编译，但是最近编译出来的固件似乎不是很稳定，有时候会挂掉，还有一个重要的问题是在openwrt系统下性能不是很好，同样跑到140mbps的带宽时cpu占用比padavan高，所以后来采用了padavan固件。
+笔者主路由使用k2p，刷的padavan自编译系统，没有集成各种复杂组件，只保留了基本的路由功能，固件大小不足5mb。刚开始刷的lede自编译，但是最近编译出来的固件似乎不是很稳定，有时候会挂掉，还有一个重要的问题是在openwrt系统下性能比padavan略差，所以后来采用了padavan固件。
 
-由于要把流量转发到另外一台设备，开始尝试iptables直接DNAT，始终不成功，于是放弃。之前采用iptables先REDIRECT到本地的ipt2socks，然后再走socks5到树莓派的v2ray/trojan方式。对于DNS部分由dnsmasq直接指定server到树莓派的trojan开的forward端口或者v2ray的dns转发端口。tproxy的方式在openwrt下没有问题，但是padavan下没有成功。
+由于要把流量转发到另外一台设备，开始尝试iptables直接DNAT，始终不成功，于是放弃。之前采用iptables先REDIRECT到本地的ipt2socks，然后再走socks5到树莓派的v2ray/xray/trojan方式。对于DNS部分由dnsmasq直接指定server到树莓派的trojan开的forward端口或者v2ray的dns转发端口。tproxy的方式在openwrt下没有问题，但是padavan下没有成功。
 
-**最近正好遇到了一些路由表相关的问题，于是又想起这个能不能用路由表的方式解决，从而替换掉ipt2socks的转发。另外，v2ray近期更新后新增了xtls配合vless据说性能改善很明显，于是又从trojan转战回了v2ray。经过不断的尝试，终于可以把ipt2socks去掉了。**
+**目前推荐使用路由表方式，不再依赖ipt2socks的转发，性能更优。**
+
+**另外，xray现在从v2ray独立出来，使用xtls配合xtls-rprx-splice性能很强大，目前看来trojan性能已经落后。**
 
 ## dnsmasq
 
@@ -111,7 +130,7 @@ chmod +x /etc/storage/ipt2socks/iptables.sh
 # 如果配置没生效，可手动关闭防火墙再打开
 ```
 
-# 树莓派4b
+# 树莓派4b或(友善)NanoPi R2S
 
 可以自行从lede编译固件，也可以从 [release](https://github.com/felix-fly/openwrt-raspberry/releases) 处下载。
 
@@ -127,13 +146,21 @@ chmod +x /etc/storage/ipt2socks/iptables.sh
 # 忽略 DHCP
 ```
 
-v2ray和trojan选择其一即可，目前更推荐v2ray，新协议提升了性能，而且后期还有优化提升的空间，之前的版本trojan性能上有优势，跑到140mbps时trojan的cpu接近30%，而v2ray的cpu接近40%，一般情况下使用二者均可。
+v2ray、xray和trojan选择其一即可，目前更推荐xray，新协议提升了性能，而且后期还有优化提升的空间。
 
 笔者编译的固件里只包含了trojan而没有v2ray。由于v2ray更新比较快，且后期安装很容易，而trojan独立编译并不容易，暂时保留。
 
-## v2ray（推荐）
+## xray（推荐）
 
-下载v2ray文件夹，修改config.json文件里的address、id、port等，[点此获取最新版本的v2ray。](https://github.com/felix-fly/v2ray-openwrt/releases)
+**[点此获取最新版本的xray](https://github.com/felix-fly/xray-openwrt/releases)**
+
+安装方式同 v2ray
+
+## v2ray
+
+下载v2ray文件夹，修改config.json文件里的address、id、port等
+
+**[点此获取最新版本的v2ray](https://github.com/felix-fly/v2ray-openwrt/releases)**
 
 使用ipt2socks方式需要修改protocol为socks
 
@@ -195,6 +222,10 @@ iptables -t nat -A PREROUTING -j PROXY
   ![box](images/box.png)
 
 ## 更新记录
+2020-12-23
+* 添加目录
+* 整理文案
+
 2020-09-30
 * 增加路由表转发方式
 * 优化文案
