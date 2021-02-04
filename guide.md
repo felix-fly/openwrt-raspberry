@@ -11,7 +11,8 @@
   * [v2ray](#v2ray)
   * [trojan](#trojan)
   * [iptables配置](#iptables配置)
-  * [更新记录](#更新记录)
+* [IPv6降级](#IPv6降级)
+* [更新记录](#更新记录)
 
 # 开场白
 
@@ -221,7 +222,33 @@ iptables -t nat -A PREROUTING -j PROXY
 
   ![box](images/box.png)
 
-## 更新记录
+# IPv6降级
+
+目前国内各大运营商都落实了IPv6,在本地网络开通IPv6的情况下，访问园外网络时可能会被优先到IPv6网络，此时会导致分流失效，因为目前的ipset只适用于IPv4情形。这里采取了对IPv6降级处理，即园外网络解析时屏蔽AAAA记录，确保始终走IPv4网络。实现也比较简单：
+
+## 主路由
+
+修改 gw.hosts 文件，去掉 `#1053`
+
+## 树莓派
+
+修改 resolv 文件，nameserver 指向主路由
+
+```bash
+rm /etc/resolv.conf
+echo "nameserver 192.168.1.1" > /etc/resolv.conf
+```
+
+在 `luci-网络-DHCP/DNS-基本设置` 下，修改 **本地服务器** 为
+
+```bash
+127.0.0.1#1053
+```
+
+# 更新记录
+2021-02-4
+* IPv6降级
+
 2020-12-23
 * 添加目录
 * 整理文案
