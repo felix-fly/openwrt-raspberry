@@ -239,7 +239,7 @@ rm /etc/resolv.conf
 echo "nameserver 192.168.1.1" > /etc/resolv.conf
 ```
 
-在 `luci-网络-DHCP/DNS-基本设置` 下，修改 **本地服务器** 为
+在 `luci-网络-DHCP/DNS-基本设置` 下， 取消 **唯一授权**，修改 **本地服务器** 为
 
 ```bash
 127.0.0.1#1053
