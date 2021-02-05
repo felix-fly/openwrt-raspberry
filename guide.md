@@ -30,7 +30,7 @@
 
 ## dnsmasq
 
-下载dnsmasq文件夹，修改gw.hosts文件里192.168.1.10:1053的ip为树莓派的ip
+下载dnsmasq文件夹，修改gw.hosts文件里192.168.1.10#1053的ip为树莓派的ip
 
 然后整个上传到主路由，路径依固件不同
 
@@ -244,6 +244,8 @@ echo "nameserver 192.168.1.1" > /etc/resolv.conf
 ```bash
 127.0.0.1#1053
 ```
+
+在 `luci-网络-DHCP/DNS-HOSTS 和解析文件` 下，勾选 **忽略解析文件**
 
 # 更新记录
 2021-02-4
