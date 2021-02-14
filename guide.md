@@ -70,10 +70,14 @@ conf-dir=/etc/storage/dnsmasq, *.hosts
 # 在 luci-网络-防火墙-自定义规则 下添加
 ipset -R < /etc/config/dnsmasq/ad.ips
 ipset -R < /etc/config/dnsmasq/gw.ips
-ip rule add fwmark 1 table 100
-ip route add default via 192.168.1.10 table 100
 iptables -t filter -A INPUT -m set --match-set ad dst -j REJECT
 iptables -t mangle -A PREROUTING -p tcp -m set --match-set gw dst -j MARK --set-mark 1
+
+#在 系统(system) - 启动(startup) - 本地启动(localstartup) 中 添加
+ip rule add fwmark 1 table 100
+ip route add default via 192.168.1.10 table 100
+
+
 
 # padavan
 # 新建文件 /etc/storage/iptables.sh 内容如下：
